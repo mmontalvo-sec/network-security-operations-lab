@@ -1,0 +1,26 @@
+flowchart LR
+    subgraph PA["Palo Alto PA-500 — VR-SOC"]
+        E10["e1/2.10\n172.16.10.1/24\nZone: CLIENTS"]
+        E20["e1/2.20\n172.16.0.1/24\nZone: WINDOWS-SERVERS"]
+        E30["e1/2.30\n172.16.30.1/24\nZone: IDS-MGMT"]
+        E40["e1/2.40\n172.16.40.1/24\nZone: SIEM"]
+        E99["e1/2.99\n172.16.99.1/24\nZone: MGMT"]
+        E1["e1/1\n10.10.10.1/30\nZone: RED-TRANSIT"]
+    end
+
+    subgraph SW["Cisco Catalyst 3560 — BlueSwitch (Layer 2)"]
+        V10["VLAN 10 CLIENTS\nFa0/13-16"]
+        V20["VLAN 20 WINDOWSSERVER\nFa0/14-16"]
+        V30["VLAN 30 IDSMIRROR\nFa0/9-11"]
+        V40["VLAN 40 SIEM\nFa0/12"]
+        V99["VLAN 99 MGMT\nFa0/24"]
+        SPAN["SPAN Dest: Fa0/9\nSource: Fa0/1-2,12-16"]
+    end
+
+    E10 <-->|"802.1Q tag 10"| V10
+    E20 <-->|"802.1Q tag 20"| V20
+    E30 <-->|"802.1Q tag 30"| V30
+    E40 <-->|"802.1Q tag 40"| V40
+    E99 <-->|"802.1Q tag 99"| V99
+    V10 -. "mirrored" .-> SPAN
+    V40 -. "mirrored" .-> SPAN

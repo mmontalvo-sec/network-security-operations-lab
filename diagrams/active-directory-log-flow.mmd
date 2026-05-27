@@ -1,0 +1,20 @@
+flowchart LR
+    subgraph DOM["soc.lab Domain"]
+        DC["DC01 / DNS\n172.16.20.10\nAD DS + DNS + NTP"]
+        DHCP["wserverdhcp\n172.16.0.7\nDHCP Server"]
+        BKUP["wserverbackup\n172.16.0.8\nFile Share Server"]
+        C1["client1\n172.16.10.4\nWindows 10"]
+        C2["client2\n172.16.10.10\nWindows 10"]
+        RT["redteam1\n172.16.10.103\nWindows 10"]
+    end
+
+    subgraph SIEM["Wazuh SIEM — VLAN 40"]
+        WM["Wazuh Manager\n5 Active Agents\n20,887+ Events"]
+    end
+
+    C1 -->|"4624 Logon\n4625 Failed\n4648 Explicit creds\nWazuh Agent"| WM
+    C2 -->|"4624 Logon\n4625 Failed\nWazuh Agent"| WM
+    RT -->|"nmap/scan events\n4625 Failed SMB\nWazuh Agent"| WM
+    DHCP -->|"DHCP events\nWazuh Agent"| WM
+    BKUP -->|"5140 Share access\n5145 Object check\nFIM alerts\nWazuh Agent"| WM
+    DC -->|"4768/4769 Kerberos\n4625 Bad password\nDNS events"| WM

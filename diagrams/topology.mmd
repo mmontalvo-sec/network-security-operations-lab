@@ -1,0 +1,18 @@
+flowchart TB
+    RED["RED / Test Network\n192.168.1.0/24\nclient: Kali Linux\nredteam1: 172.16.10.103"] --> R1["RED Router\n10.10.10.2/30\nFa0/1: 192.168.1.1/24\nOSPF router-id 1.1.1.1"]
+    R1 -->|"Transit 10.10.10.0/30\nOSPF Area 0"| PA["Palo Alto PA-500\ne1/1: 10.10.10.1/30\nZone: RED-TRANSIT\nVR-SOC\nInter-VLAN Gateway\nSyslog Source"]
+
+    PA -->|"802.1Q Trunk e1/2\nVLANs 10,20,30,40,99"| SW["Cisco Catalyst 3560\nBlueSwitch\nLayer 2 Only"]
+
+    SW --> V10["VLAN 10 — CLIENTS\n172.16.10.0/24\nclient1: .4\nclient2: .10\nredteam1: .103"]
+    SW --> V20["VLAN 20 — WINDOWSSERVER\n172.16.20.0/24\nDC/DNS: 172.16.20.10\nwserverdhcp: 172.16.0.7\nwserverbackup: 172.16.0.8"]
+    SW --> V30["VLAN 30 — IDSMIRROR\n172.16.30.0/24\nSnort mgmt: .9"]
+    SW --> V40["VLAN 40 — SIEM\n172.16.40.0/24\nWazuh Manager"]
+    SW --> V99["VLAN 99 — MGMT\n172.16.99.0/24"]
+
+    SW -. "SPAN: Fa0/1-2,12-16 → Fa0/9\n(no IP on sniff NIC)" .-> SNORT["Snort IDS\nUbuntu Server\nDual NIC\nPassive Only"]
+
+    V10 -->|"Wazuh Agent TCP 1514/1515"| V40
+    V20 -->|"Wazuh Agent\nWindows Events"| V40
+    PA -->|"Syslog UDP/514"| V40
+    SNORT -->|"localfile: /var/log/snort/alert\nWazuh Agent"| V40

@@ -1,0 +1,27 @@
+flowchart LR
+    subgraph SRC["Log Sources"]
+        W10["Windows Clients\nVLAN 10\nEvent IDs 4624/4625/4648"]
+        WS["Windows Servers\nVLAN 20\nEvent IDs 5140/5145/4625"]
+        PA["Palo Alto PA-500\nFirewall\nTraffic + Deny Logs"]
+        SN["Snort IDS\nUbuntu Sensor\nVLAN 30 mgmt"]
+    end
+
+    subgraph WAZUH["Wazuh SIEM — VLAN 40"]
+        WM["Wazuh Manager"]
+        DASH["Threat Monitoring\nDashboard"]
+        MITRE["MITRE ATT&CK\nMapping"]
+        EVT["Event Search\nInvestigation Timeline"]
+    end
+
+    OUT["Incident Report\nEvidence Package\nPortfolio Documentation"]
+
+    W10 -->|"Wazuh Agent\nTCP 1514/1515"| WM
+    WS -->|"Wazuh Agent\nTCP 1514/1515"| WM
+    PA -->|"Syslog\nUDP 514"| WM
+    SN -->|"Wazuh Agent\nlocalfile: /var/log/snort/alert"| WM
+
+    WM --> DASH
+    WM --> MITRE
+    WM --> EVT
+    EVT --> OUT
+    DASH --> OUT

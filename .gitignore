@@ -1,0 +1,31 @@
+# Sensitive data - never commit
+*.pcap
+*.pcapng
+*.key
+*.pem
+*.pfx
+*.p12
+secrets.txt
+passwords.txt
+*.log.full
+
+# Full firewall backups
+*.xml.gz
+running-config-full.*
+full-backup.*
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Editor artifacts
+.vscode/
+.idea/
+*.bak
+
+# Credentials and tokens
+.env
+token.txt
+api_keys.txt
