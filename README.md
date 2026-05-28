@@ -6,11 +6,12 @@
 
 ## Overview
 
-This project documents the design, build, configuration, validation, and demonstration of a physical Network Security Operations lab built to simulate real enterprise defensive security workflows.
-
-The lab was proposed, architected, and built as a student-led technical project. Contributions included designing the network proposal, configuring major infrastructure components, writing implementation guides, validating every layer of the stack, and leading technical demonstrations for other students.
-
-The lab follows a **baseline-first methodology**: infrastructure is built and validated, normal behavior is documented, then detection and monitoring layers are added on top. This is the correct sequence for building a defensible and observable network environment.
+This repository documents a graduate-level enterprise-style Network Security 
+Operations Lab originally built during my Computer and Network Technology program 
+and expanded into a professional portfolio project. It simulates defensive 
+security workflows across physical networking hardware, Windows infrastructure,
+firewall segmentation, SIEM monitoring, IDS visibility, and incident-response 
+style documentation.
 
 > **Ethical Scope:** All testing is conducted within an owned, isolated lab environment. No scanning, enumeration, or adversary simulation is directed at external or unauthorized systems.
 
@@ -25,7 +26,7 @@ The lab follows a **baseline-first methodology**: infrastructure is built and va
 - Deployed Wazuh SIEM and enrolled Windows and Linux agents
 - Set up Snort IDS with dual-NIC passive architecture
 - Created implementation guides and step-by-step runbooks
-- Led technical demonstrations and explained the architecture to other students
+- Led technical demonstrations and explained the architecture to technical and non-technical audiences
 - Documented configurations, validation commands, and detection scenarios
 
 ---
